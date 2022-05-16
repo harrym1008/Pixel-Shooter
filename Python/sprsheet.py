@@ -1,14 +1,18 @@
-import pygame
-import math
-import time
+import pygame, math, time, os
+from PIL import Image
 
 pygame.init()
 
 imagesFound = []
 fileFinder = 1
+
+directory = os.getcwd()
+
+print(f"Searching in '{directory}'")
+
 while True:
     try:
-        tempImage = pygame.image.load("C:/Users/harry/OneDrive/Documents/Unity/Complete Destruction/Python/SPR ({}).png".format(str(fileFinder)))
+        tempImage = pygame.image.load(f"{directory}/SPR ({str(fileFinder)}).png")
         print("Found SPR ({}).png".format(fileFinder))
 
         imagesFound.append(tempImage)
@@ -42,7 +46,6 @@ rowCol[1] = round(c)
 
     
 print("Decided dimensions = {} rows, {} columns".format(str(r),str(c)))
-time.sleep(1)
 
 
 display = pygame.display.set_mode((maxSize[0] * rowCol[0], maxSize[1] * rowCol[1]))
@@ -80,9 +83,37 @@ for y in range(rowCol[1]):
 
 
 pygame.display.update()
-pygame.image.save(display, "C:/Users/harry/OneDrive/Documents/Unity/Complete Destruction/Python/SPRSHEET.png")
-print("Success!\nSprite sheet saved in: SPRSHEET.png")
-time.sleep(1)
+pygame.image.save(display, f"{directory}/tempSprsheet.png")
+print("Success! Saved non transparent image\n")
+
+
+img = Image.open("tempSprsheet.png")
+print("Opened non transparent image in PIL")
+
+img = img.convert("RGBA")
+print("Converted image to RGBA")
+
+data = img.getdata()
+print("Got image data\nConverting cyan colours to transparent....")
+
+newData = []
+for item in data:
+    if item[0] == 0 and item[1] == 255 and item[2] == 255:
+        newData.append((0, 0, 0, 0))
+    else:
+        newData.append(item)
+
+print("Completed!")
+img.putdata(newData)
+img.save("SPRSHEET.png", "PNG")
+os.remove("tempSprsheet.png")
+print("Saved to SPRSHEET.png!")
+
+quit()
+
+
+
+
 
 
 
