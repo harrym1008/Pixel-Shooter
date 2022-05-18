@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class SpriteAngle : MonoBehaviour
 {
-    [SerializeField] Transform camera;
+    [SerializeField] Transform myParent;
+    Transform camera;
+
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private bool[] flipSprites;
@@ -14,6 +16,16 @@ public class SpriteAngle : MonoBehaviour
 
     public float angle;
     public int lastIndex;
+
+
+    public void UpdateCameraTransform(Transform newCamera)
+    {
+        camera = newCamera;
+    }
+
+
+
+
 
     private void Start()
     {
@@ -25,11 +37,11 @@ public class SpriteAngle : MonoBehaviour
     private void Update()
     {
         // Get Target position and direction
-        targetPos = new Vector3(camera.position.x, transform.position.y, camera.position.z);
-        targetDir = targetPos - transform.position;
+        targetPos = new Vector3(camera.position.x, myParent.position.y, camera.position.z);
+        targetDir = targetPos - myParent.position;
 
         // Get angle
-        angle = Vector3.SignedAngle(targetDir, transform.forward, Vector3.up);
+        angle = Vector3.SignedAngle(targetDir, myParent.forward, Vector3.up);
 
         // Get index
         lastIndex = GetIndex(angle);
