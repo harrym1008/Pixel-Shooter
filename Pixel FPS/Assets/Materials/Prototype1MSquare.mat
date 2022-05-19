@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ProBuilder Default URP
+  m_Name: Prototype1MSquare
   m_Shader: {fileID: 4800000, guid: a5e1047f27bee462089b2bc3104f90fd, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4

@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpHeight;
 
     Vector3 groundCheck = Vector3.zero;
-    float groundDistance;
+    [SerializeField] float groundDistance;
 
     public LayerMask groundMask;
 
@@ -39,8 +39,6 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         speed = runSpeed;
-
-        groundDistance = controller.radius - 0.001f;
         groundCheck.y = -(controller.height / 2);
     }
 
@@ -53,7 +51,14 @@ public class PlayerMovement : MonoBehaviour
     {
         controls.Disable();
     }
-    
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.black;
+        Gizmos.DrawWireSphere(transform.position + groundCheck, groundDistance);
+    }
+
 
     void LateUpdate()
     {
