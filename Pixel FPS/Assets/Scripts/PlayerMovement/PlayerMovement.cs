@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     public float gravity = -9.81f;
     public float jumpHeight;
 
+    public float momentumDamping;
+
     Vector3 groundCheck = Vector3.zero;
     [SerializeField] float groundDistance;
 
@@ -20,8 +22,8 @@ public class PlayerMovement : MonoBehaviour
 
     bool jumping;
     public bool sprinting;
-
-
+    
+    Vector3 momentum;
     Vector3 velocity;
     bool isGrounded;
     float speed;
@@ -59,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position + groundCheck, groundDistance);
     }
 
-
+    // Handles player movement
     void LateUpdate()
     {
         if (sprinting)
@@ -80,12 +82,24 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Vector2 movement = controls.Player.Movement.ReadValue<Vector2>();
+        Vector3 move;
         float x = movement.x;
         float z = movement.y;
 
-        Vector3 move = transform.right * x + transform.forward * z;
+        if (movement != Vector2.zero)
+        {
+            move = transform.right * x * speed + transform.forward * z * speed;
+            momentum = move;
+        }
+        else
+        {
+            momentum = Vector3.Lerp(momentum, Vector3.zero, momentumDamping * Time.deltaTime  );
+            momentum = new Vector3(momentum.x, 0f, momentum.z);
+            move = momentum;
+        }
 
-        controller.Move(move * speed * Time.deltaTime);
+        controller.Move(move * Time.deltaTime);
+
 
         if (jumping && isGrounded)
         {
