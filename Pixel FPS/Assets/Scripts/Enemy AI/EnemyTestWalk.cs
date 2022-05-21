@@ -12,7 +12,7 @@ public class EnemyTestWalk : MonoBehaviour
         while (true)
         {
             navMeshAgent.SetDestination(new Vector3(
-                RNG.Range(16f, -16f), 2f, RNG.Range(-36f, -7f)));
+                RNG.Range(16f, -16f), 2f, RNG.Range(-36f, 0f)));
 
             yield return new WaitForSeconds(RNG.Range(2f, 4f));
         }

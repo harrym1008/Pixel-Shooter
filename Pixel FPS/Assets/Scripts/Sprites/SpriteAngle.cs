@@ -23,10 +23,6 @@ public class SpriteAngle : MonoBehaviour
         camera = newCamera;
     }
 
-
-
-
-
     private void Start()
     {
         camera = Camera.main.transform;
@@ -47,7 +43,6 @@ public class SpriteAngle : MonoBehaviour
         lastIndex = GetIndex(angle);
 
         // Set as sprite image and set flip param
-        spriteRenderer.sprite = sprites[lastIndex];
         spriteRenderer.flipX = !flipSprites[lastIndex];
     }
 
@@ -81,6 +76,5 @@ public class SpriteAngle : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, transform.forward);
         Gizmos.DrawLine(transform.position, targetPos);
-
     }
 }

@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class EnemyAnimator : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] Animator animator;
+    [SerializeField] SpriteAngle spriteAngle;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        animator.SetFloat("SprRot", spriteAngle.lastIndex);    
     }
 }
