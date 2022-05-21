@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpHeight;
 
     public float momentumDamping;
+    public float inputLerping;
 
     Vector3 groundCheck = Vector3.zero;
     [SerializeField] float groundDistance;
@@ -28,9 +29,12 @@ public class PlayerMovement : MonoBehaviour
     bool isGrounded;
     float speed;
 
+    Vector2 lastInput;
+
 
     private void Awake()
     {
+        // Controls functions
         controls = new InputMaster();
 
         controls.Player.Jump.performed += _ => jumping = true;
@@ -61,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position + groundCheck, groundDistance);
     }
 
+
     // Handles player movement
     void LateUpdate()
     {
@@ -81,7 +86,9 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = -2f;
         }
 
-        Vector2 movement = controls.Player.Movement.ReadValue<Vector2>();
+        // Movement
+        Vector2 beforeLerping = controls.Player.Movement.ReadValue<Vector2>();
+        Vector2 movement = LerpInput(beforeLerping);
         Vector3 move;
         float x = movement.x;
         float z = movement.y;
@@ -98,9 +105,10 @@ public class PlayerMovement : MonoBehaviour
             move = momentum;
         }
 
+        move = RemoveY(move);
         controller.Move(move * Time.deltaTime);
 
-
+        // Jumping
         if (jumping && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
@@ -110,5 +118,19 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
+    }
+
+
+    Vector3 RemoveY(Vector3 vector3)
+    {
+        return new Vector3(vector3.x, 0f, vector3.z);
+    }
+
+
+    Vector2 LerpInput(Vector2 newInput)
+    {
+        Vector2 returns = Vector2.Lerp(lastInput, newInput, inputLerping * Time.deltaTime);
+        lastInput = returns;
+        return returns;
     }
 }

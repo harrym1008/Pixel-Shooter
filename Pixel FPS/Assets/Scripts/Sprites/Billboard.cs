@@ -22,5 +22,9 @@ public class Billboard : MonoBehaviour
         {
             transform.eulerAngles = new Vector3(0f, transform.eulerAngles.y, transform.eulerAngles.z);
         }
+        /*else
+        {
+            transform.eulerAngles = new Vector3(-transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z);
+        }*/
     }
 }
