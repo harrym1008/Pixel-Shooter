@@ -23,7 +23,7 @@ public class MouseLook : MonoBehaviour
 
     void Update()
     {
-        Vector2 mouseDelta = Controls.controls.Combat.Aim.ReadValue<Vector2>() * sensitivity * Time.deltaTime;
+        Vector2 mouseDelta = Controls.controls.Combat.Aim.ReadValue<Vector2>() * sensitivity/* * Time.deltaTime*/;
         mouseX = mouseDelta.x;  mouseY = mouseDelta.y;
 
         xRot -= mouseY;
