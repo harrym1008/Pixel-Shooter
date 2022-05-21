@@ -5,7 +5,6 @@ using UnityEditor;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public InputMaster controls;
     public CharacterController controller;
 
     public float runSpeed;
@@ -19,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     Vector3 groundCheck = Vector3.zero;
     [SerializeField] float groundDistance;
 
+    public Controls controlsPrefab;
     public LayerMask groundMask;
 
     bool jumping;
@@ -34,28 +34,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        // Controls functions
-        controls = new InputMaster();
-
-        controls.Player.Jump.performed += _ => jumping = true;
-        controls.Player.Sprint.performed += _ => sprinting = true;
-        controls.Player.Sprint.canceled += _ => sprinting = false;
+        Instantiate(controlsPrefab);
     }
 
     private void Start()
     {
+        // Controls functions
+        Controls.controls.Player.Jump.performed += _ => jumping = true;
+        Controls.controls.Player.Sprint.performed += _ => sprinting = true;
+        Controls.controls.Player.Sprint.canceled += _ => sprinting = false;
+
         speed = runSpeed;
         groundCheck.y = -(controller.height / 2);
-    }
-
-    private void OnEnable()
-    {
-        controls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        controls.Disable();
     }
 
 
@@ -87,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Movement
-        Vector2 beforeLerping = controls.Player.Movement.ReadValue<Vector2>();
+        Vector2 beforeLerping = Controls.controls.Player.Movement.ReadValue<Vector2>();
         Vector2 movement = LerpInput(beforeLerping);
         Vector3 move;
         float x = movement.x;
