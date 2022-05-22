@@ -581,8 +581,8 @@ MonoBehaviour:
   environment:
     serializedVersion: 2
     m_Bits: 8
-  wanderRange: 3
-  wanderWaitTime: {x: 1, y: 3}
+  wanderRange: 8
+  wanderWaitTime: {x: 2, y: 3}
 --- !u!195 &611117257
 NavMeshAgent:
   m_ObjectHideFlags: 0

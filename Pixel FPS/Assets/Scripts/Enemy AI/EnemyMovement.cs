@@ -125,16 +125,16 @@ public class EnemyMovement : MonoBehaviour
         {
             while (wandering)
             {
-                stationedPosition += SearchWalkPoint();
+                print("Refresh");
+                stationedPosition = SearchWalkPoint();
                 agent.SetDestination(stationedPosition);
 
                 float until = RNG.RangeBetweenVector2(wanderWaitTime);
                 while (wandering && until > 0)
                 {
                     until -= Time.deltaTime;
+                    yield return null;
                 }
-
-                yield return null;
             }
 
             yield return new WaitUntil(() => wandering);
@@ -143,27 +143,27 @@ public class EnemyMovement : MonoBehaviour
 
     private Vector3 SearchWalkPoint()
     {
+        print("Searching");
         int failsafeCounter = 0;
 
-        while (true)
+        while (failsafeCounter < 128)
         {
+            failsafeCounter++;
             float randomX = RNG.Range(-wanderRange, wanderRange);
             float randomZ = RNG.Range(-wanderRange, wanderRange);
 
             Vector3 walkPoint = new Vector3(stationedPosition.x + randomX, stationedPosition.y, stationedPosition.z + randomZ);
 
-            if (Physics.Raycast(walkPoint, -transform.up, out RaycastHit hit, 2f, environment))
+            print(walkPoint);
+            if (Physics.Raycast(walkPoint, -transform.up, out RaycastHit hit, 2f, environment)
+                /*|| !Physics.Linecast(walkPoint, transform.position, environment)*/)
             {
+                Debug.Log($"{gameObject.name}: Found a new walking point {hit.point}");
                 return hit.point;
             }
-
-            failsafeCounter++;
-            if (failsafeCounter >= 256)
-            {
-                Debug.LogError($"{gameObject.name}: Could not find a new wander location after 256 attempts");
-                return stationedPosition;
-            }
         }
-        
+        Debug.LogError($"{gameObject.name}: Could not find a new wander location after 128 attempts");
+        return stationedPosition;
+
     }
 }
