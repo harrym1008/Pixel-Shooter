@@ -109,6 +109,7 @@ img.save("SPRSHEET.png", "PNG")
 os.remove("tempSprsheet.png")
 print("Saved to SPRSHEET.png!")
 
+time.sleep(2)
 quit()
 
 
