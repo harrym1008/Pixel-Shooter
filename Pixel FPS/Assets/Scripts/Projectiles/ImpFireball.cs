@@ -61,6 +61,8 @@ public class ImpFireball : MonoBehaviour
         PS[0].Stop();
         PS[1].Stop();
         PS[2].Play();
+
+        Destroy(GetComponent<Collider>());
     }
 
     void KillMe()

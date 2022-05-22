@@ -75,6 +75,6 @@ public class SpriteAngle : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, transform.forward);
-        Gizmos.DrawLine(transform.position, targetPos);
+        //Gizmos.DrawLine(transform.position, targetPos);
     }
 }
