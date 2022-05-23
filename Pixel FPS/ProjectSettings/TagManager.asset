@@ -36,7 +36,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Attacking Camera
   m_SortingLayers:
   - name: Default
     uniqueID: 0

@@ -17,6 +17,7 @@ public class EnemyMovement : MonoBehaviour
     Transform targetTransform;
 
     Vector3 lastSeenTargetLocation;
+    Vector3 spawnPosition;
     Vector3 stationedPosition;
 
     [Header("Main Parameters")]
@@ -32,6 +33,8 @@ public class EnemyMovement : MonoBehaviour
     private void Start()
     {
         stationedPosition = transform.position;
+        spawnPosition = stationedPosition;
+
         agent = GetComponent<NavMeshAgent>();
         ChangeTarget(GameObject.Find("Player").transform);
 
@@ -146,7 +149,7 @@ public class EnemyMovement : MonoBehaviour
         print("Searching");
         int failsafeCounter = 0;
 
-        while (failsafeCounter < 128)
+        while (failsafeCounter < 100)
         {
             failsafeCounter++;
             float randomX = RNG.Range(-wanderRange, wanderRange);
@@ -162,8 +165,8 @@ public class EnemyMovement : MonoBehaviour
                 return hit.point;
             }
         }
-        Debug.LogError($"{gameObject.name}: Could not find a new wander location after 128 attempts");
-        return stationedPosition;
+        Debug.LogError($"{gameObject.name}: Could not find a new wander location after 100 attempts\nReturning enemy spawn location");
+        return spawnPosition;
 
     }
 }
