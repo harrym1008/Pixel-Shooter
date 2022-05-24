@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class SpriteAngle : MonoBehaviour
 {
@@ -73,6 +74,8 @@ public class SpriteAngle : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if (Camera.current != Camera.main && Camera.current != SceneView.lastActiveSceneView.camera) return;
+
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, transform.forward);
         //Gizmos.DrawLine(transform.position, targetPos);

@@ -19,13 +19,5 @@ public class EnemyTestWalk : MonoBehaviour
     }
 
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-
-        for (int i = 0; i < navMeshAgent.path.corners.Length-1; i++)
-        {
-            Gizmos.DrawLine(navMeshAgent.path.corners[i], navMeshAgent.path.corners[i + 1]);
-        }
-    }
+    
 }

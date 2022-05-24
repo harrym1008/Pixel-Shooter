@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEditor;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -110,17 +111,7 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-
-    public void OnDrawGizmos()
-    {      
-        if (targetInSight)
-            Gizmos.color = Color.green;
-        else
-            Gizmos.color = Color.red;
-
-        Gizmos.DrawLine(transform.position + sightLocation, targetLocation);
-    }
-
+    
 
     IEnumerator Wandering()
     {
@@ -168,5 +159,28 @@ public class EnemyMovement : MonoBehaviour
         Debug.LogError($"{gameObject.name}: Could not find a new wander location after 100 attempts\nReturning enemy spawn location");
         return spawnPosition;
 
+    }
+
+
+
+    private void OnDrawGizmos()
+    {
+        if (Camera.current != Camera.main && Camera.current != SceneView.lastActiveSceneView.camera) return;
+
+
+        if (targetInSight)
+            Gizmos.color = Color.green;
+        else
+            Gizmos.color = Color.red;
+
+        Gizmos.DrawLine(transform.position + sightLocation, targetLocation);
+
+
+        Gizmos.color = Color.blue;
+
+        for (int i = 0; i < agent.path.corners.Length - 1; i++)
+        {
+            Gizmos.DrawLine(agent.path.corners[i], agent.path.corners[i + 1]);
+        }
     }
 }
