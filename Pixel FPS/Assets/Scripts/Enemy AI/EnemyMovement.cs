@@ -178,9 +178,12 @@ public class EnemyMovement : MonoBehaviour
 
         Gizmos.color = Color.blue;
 
-        for (int i = 0; i < agent.path.corners.Length - 1; i++)
+        try
         {
-            Gizmos.DrawLine(agent.path.corners[i], agent.path.corners[i + 1]);
-        }
+            for (int i = 0; i < agent.path.corners.Length - 1; i++)
+            {
+                Gizmos.DrawLine(agent.path.corners[i], agent.path.corners[i + 1]);
+            }
+        } catch { }
     }
 }

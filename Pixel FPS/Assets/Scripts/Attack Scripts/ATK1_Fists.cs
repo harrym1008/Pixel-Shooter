@@ -13,11 +13,13 @@ public class ATK1_Fists : MonoBehaviour
     [SerializeField] float speed = 1f;
     [SerializeField] float reach = 1.5f;
     [SerializeField] GameObject idleHand;
-    [SerializeField] Transform player;
     [SerializeField] AudioClip[] sfx;
+
+    [SerializeField] LayerMask[] layerMasks;
 
     AudioSource audioSource;
     bool canThrowHands = true;
+    Transform fireAngle;
 
     private void Start()
     {
@@ -25,6 +27,8 @@ public class ATK1_Fists : MonoBehaviour
         CheckToShowIdleHand();
 
         audioSource = GetComponent<AudioSource>();
+
+        fireAngle = Camera.main.transform;
     }
 
 
@@ -46,14 +50,14 @@ public class ATK1_Fists : MonoBehaviour
         string trigger = strings[GetNextCombatType()];
         animator.SetTrigger(trigger);
 
-        Invoke(nameof(AttackDMG), attackTime * 0.6f / speed);
+        Invoke(nameof(AttackDMG), attackTime * 0.3f / speed);
 
         yield return Wait.Seconds(attackTime / speed);
 
         animator.ResetTrigger(trigger);
         canThrowHands = true;
 
-        Invoke(nameof(CheckToShowIdleHand), 0.01f);
+        Invoke(nameof(CheckToShowIdleHand), 0.03f);
 
     }
 
@@ -67,12 +71,11 @@ public class ATK1_Fists : MonoBehaviour
     {
         int pick, counter = 0;
 
-        string s = "";
+        /*string s = "";
         foreach (var item in combatTypes)
         {
             s += item.ToString();
-        }
-        print(s);
+        }*/
 
         do
         {
@@ -80,6 +83,8 @@ public class ATK1_Fists : MonoBehaviour
             counter++;            
         }
         while (!combatTypes[pick] && counter < 100 );
+
+        //print(s + $" --> {strings[pick]}");
 
         UpdateCombatTypes(pick);
         return pick;
@@ -104,8 +109,8 @@ public class ATK1_Fists : MonoBehaviour
 
         for (int angle = 0; angle < angles.Length; angle++)
         {
-            if (Physics.Raycast(player.position + PlayerMovement.attackPosition, player.eulerAngles 
-                + new Vector3(angle, 0f, 0f), out RaycastHit hit, reach, LayerMask.NameToLayer("Enemies")))
+            if (Physics.Raycast(fireAngle.position, fireAngle.eulerAngles 
+                + new Vector3(angle, 0f, 0f), out RaycastHit hit, reach, layerMasks[0]))
             {
                 return hit.collider.gameObject;
             }
@@ -117,14 +122,19 @@ public class ATK1_Fists : MonoBehaviour
 
     private void AttackDMG()
     {
-        Debug.DrawRay(player.position + PlayerMovement.attackPosition, player.eulerAngles);
+        Debug.DrawRay(fireAngle.position, fireAngle.forward * 180f, Color.white, 0.5f);
 
-        if (Physics.Raycast(player.position + PlayerMovement.attackPosition, player.eulerAngles, 
-            out RaycastHit hit, reach, LayerMask.NameToLayer("Enemies")))
+        if (Physics.Raycast(fireAngle.position, fireAngle.forward * 180f, 
+            out RaycastHit hit, reach, layerMasks[0]))
         {
-            audioSource.PlayOneShot(sfx[3]);
             print($"I hit {hit.collider.gameObject}");
+            Invoke(nameof(PlayBoofSound), attackTime * 0.4f / speed);
         }
+    }
+
+    private void PlayBoofSound()
+    {
+        audioSource.PlayOneShot(sfx[3]);
     }
 
 }

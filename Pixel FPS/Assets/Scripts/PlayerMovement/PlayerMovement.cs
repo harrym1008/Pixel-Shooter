@@ -5,7 +5,7 @@ using UnityEditor;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public static Vector3 attackPosition = new Vector3(0f, 0.4f, 0f);
+    //public static Vector3 attackPosition = new Vector3(0f, 0.4f, 0f);
 
     public CharacterController controller;
 
