@@ -216,6 +216,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Tap(duration=0.05)"
+                },
+                {
+                    "name": "Next Weapon",
+                    "type": "Button",
+                    "id": "52d468da-d2f2-46fe-84e9-bff135018dab",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Tap(duration=0.05)"
+                },
+                {
+                    "name": "Previous Weapon",
+                    "type": "Button",
+                    "id": "eaf4cf0c-2269-43b9-80af-4cb3591efcb0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Tap(duration=0.05)"
                 }
             ],
             "bindings": [
@@ -326,6 +342,50 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ed0195d6-a6a3-4c63-8834-e0bd68bd96c5",
+                    "path": "<Keyboard>/period",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Next Weapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8aee06f5-c1c4-4cf9-bc1b-ee5dcf8e4d7b",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Next Weapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "92c8745c-2df2-4abd-af57-5ce78bcca69a",
+                    "path": "<Keyboard>/comma",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Previous Weapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c06c1ad2-ff0b-4e36-b57a-8c8144057ce6",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Previous Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -229,6 +229,22 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Tap(duration=0.05)""
+                },
+                {
+                    ""name"": ""Next Weapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""52d468da-d2f2-46fe-84e9-bff135018dab"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Tap(duration=0.05)""
+                },
+                {
+                    ""name"": ""Previous Weapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""eaf4cf0c-2269-43b9-80af-4cb3591efcb0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Tap(duration=0.05)""
                 }
             ],
             ""bindings"": [
@@ -341,6 +357,50 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ed0195d6-a6a3-4c63-8834-e0bd68bd96c5"",
+                    ""path"": ""<Keyboard>/period"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Next Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8aee06f5-c1c4-4cf9-bc1b-ee5dcf8e4d7b"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Next Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92c8745c-2df2-4abd-af57-5ce78bcca69a"",
+                    ""path"": ""<Keyboard>/comma"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Previous Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c06c1ad2-ff0b-4e36-b57a-8c8144057ce6"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Previous Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -426,6 +486,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Combat_AimDownSight = m_Combat.FindAction("Aim Down Sight", throwIfNotFound: true);
         m_Combat_Melee = m_Combat.FindAction("Melee", throwIfNotFound: true);
         m_Combat_Reload = m_Combat.FindAction("Reload", throwIfNotFound: true);
+        m_Combat_NextWeapon = m_Combat.FindAction("Next Weapon", throwIfNotFound: true);
+        m_Combat_PreviousWeapon = m_Combat.FindAction("Previous Weapon", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_PauseMenu = m_Menu.FindAction("Pause Menu", throwIfNotFound: true);
@@ -540,6 +602,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Combat_AimDownSight;
     private readonly InputAction m_Combat_Melee;
     private readonly InputAction m_Combat_Reload;
+    private readonly InputAction m_Combat_NextWeapon;
+    private readonly InputAction m_Combat_PreviousWeapon;
     public struct CombatActions
     {
         private @InputMaster m_Wrapper;
@@ -549,6 +613,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @AimDownSight => m_Wrapper.m_Combat_AimDownSight;
         public InputAction @Melee => m_Wrapper.m_Combat_Melee;
         public InputAction @Reload => m_Wrapper.m_Combat_Reload;
+        public InputAction @NextWeapon => m_Wrapper.m_Combat_NextWeapon;
+        public InputAction @PreviousWeapon => m_Wrapper.m_Combat_PreviousWeapon;
         public InputActionMap Get() { return m_Wrapper.m_Combat; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -573,6 +639,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @Reload.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnReload;
                 @Reload.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnReload;
                 @Reload.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnReload;
+                @NextWeapon.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnNextWeapon;
+                @NextWeapon.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnNextWeapon;
+                @NextWeapon.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnNextWeapon;
+                @PreviousWeapon.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnPreviousWeapon;
+                @PreviousWeapon.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnPreviousWeapon;
+                @PreviousWeapon.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnPreviousWeapon;
             }
             m_Wrapper.m_CombatActionsCallbackInterface = instance;
             if (instance != null)
@@ -592,6 +664,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @Reload.started += instance.OnReload;
                 @Reload.performed += instance.OnReload;
                 @Reload.canceled += instance.OnReload;
+                @NextWeapon.started += instance.OnNextWeapon;
+                @NextWeapon.performed += instance.OnNextWeapon;
+                @NextWeapon.canceled += instance.OnNextWeapon;
+                @PreviousWeapon.started += instance.OnPreviousWeapon;
+                @PreviousWeapon.performed += instance.OnPreviousWeapon;
+                @PreviousWeapon.canceled += instance.OnPreviousWeapon;
             }
         }
     }
@@ -661,6 +739,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnAimDownSight(InputAction.CallbackContext context);
         void OnMelee(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnNextWeapon(InputAction.CallbackContext context);
+        void OnPreviousWeapon(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {

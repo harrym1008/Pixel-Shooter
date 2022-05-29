@@ -10,6 +10,7 @@ public static class RNG
     /// <returns></returns>
     public static double NextDouble()
     {
+        //return 0;
         return random.NextDouble();
     }
 
