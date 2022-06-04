@@ -6,13 +6,16 @@ using UnityEditor;
 
 public class EnemyMovement : MonoBehaviour
 {
+    Enemy myEnemy;
+
     bool movement = true;
     bool wandering = false;
 
-    bool targetInSight;
+    public bool targetInSight;
     float searchTime;
 
     NavMeshAgent agent;
+    Target myTarget;
 
     Vector3 targetLocation;
     Transform targetTransform;
@@ -23,7 +26,6 @@ public class EnemyMovement : MonoBehaviour
 
     [Header("Main Parameters")]
     [SerializeField] Vector3 sightLocation;
-    [SerializeField] float maxSeeDistance;
     [SerializeField] Vector2 maxSearchTime;
     [SerializeField] LayerMask environment;
 
@@ -33,10 +35,13 @@ public class EnemyMovement : MonoBehaviour
 
     private void Start()
     {
+        myEnemy = GetComponent<Enemy>();
         stationedPosition = transform.position;
         spawnPosition = stationedPosition;
 
         agent = GetComponent<NavMeshAgent>();
+        myTarget = GetComponent<Target>();
+
         ChangeTarget(GameObject.Find("Player").transform);
 
         SetMovement(true);
@@ -45,14 +50,16 @@ public class EnemyMovement : MonoBehaviour
 
     private void Update()
     {
+        if (myTarget.isDead)
+        {
+            return;
+        }
+
         if (targetTransform != null)
             targetLocation = targetTransform.position;
 
         if (!movement)
             return;
-
-        targetInSight = !Physics.Linecast(transform.position + sightLocation, targetLocation, environment)
-            && Vector3.Distance(transform.position + sightLocation, targetLocation) <= maxSeeDistance;
 
         if (targetInSight)
         {
@@ -119,7 +126,6 @@ public class EnemyMovement : MonoBehaviour
         {
             while (wandering)
             {
-                print("Refresh");
                 stationedPosition = SearchWalkPoint();
                 agent.SetDestination(stationedPosition);
 
@@ -137,7 +143,6 @@ public class EnemyMovement : MonoBehaviour
 
     private Vector3 SearchWalkPoint()
     {
-        print("Searching");
         int failsafeCounter = 0;
 
         while (failsafeCounter < 100)
@@ -152,11 +157,9 @@ public class EnemyMovement : MonoBehaviour
             if (Physics.Raycast(walkPoint, -transform.up, out RaycastHit hit, 2f, environment)
                 /*|| !Physics.Linecast(walkPoint, transform.position, environment)*/)
             {
-                Debug.Log($"{gameObject.name}: Found a new walking point {hit.point}");
                 return hit.point;
             }
         }
-        Debug.LogError($"{gameObject.name}: Could not find a new wander location after 100 attempts\nReturning enemy spawn location");
         return spawnPosition;
 
     }

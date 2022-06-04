@@ -167,9 +167,9 @@ public static class RNG
     /// <param name="xExtent">Positive extent of the x parameter</param>
     /// <param name="yExtent">Positive extent of the y parameter</param>
     /// <returns></returns>
-    public static Vector3 RandomSpread(Transform transform, float xExtent, float yExtent)
+    public static Vector3 RandomSpread(float xExtent, float yExtent)
     {
-        return transform.right * Range(-xExtent, xExtent) + transform.up * Range(-yExtent, yExtent);
+        return new Vector3(RangePosNeg(yExtent), RangePosNeg(xExtent), 0f);
     }
 
 

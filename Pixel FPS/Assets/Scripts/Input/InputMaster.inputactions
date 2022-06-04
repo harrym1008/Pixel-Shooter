@@ -215,23 +215,23 @@
                     "id": "27b8758f-20f4-4efb-9682-f518d18debd6",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap(duration=0.05)"
+                    "interactions": ""
                 },
                 {
                     "name": "Next Weapon",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "52d468da-d2f2-46fe-84e9-bff135018dab",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap(duration=0.05)"
+                    "interactions": ""
                 },
                 {
                     "name": "Previous Weapon",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "eaf4cf0c-2269-43b9-80af-4cb3591efcb0",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap(duration=0.05)"
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -348,7 +348,7 @@
                 {
                     "name": "",
                     "id": "ed0195d6-a6a3-4c63-8834-e0bd68bd96c5",
-                    "path": "<Keyboard>/period",
+                    "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
@@ -370,7 +370,7 @@
                 {
                     "name": "",
                     "id": "92c8745c-2df2-4abd-af57-5ce78bcca69a",
-                    "path": "<Keyboard>/comma",
+                    "path": "<Keyboard>/2",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",

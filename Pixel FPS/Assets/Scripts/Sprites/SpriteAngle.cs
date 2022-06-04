@@ -9,6 +9,7 @@ public class SpriteAngle : MonoBehaviour
     Transform camera;
 
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] bool setSpriteFromThis;
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private bool[] flipSprites;
 
@@ -45,6 +46,11 @@ public class SpriteAngle : MonoBehaviour
 
         // Set as sprite image and set flip param
         spriteRenderer.flipX = !flipSprites[lastIndex];
+
+        if (setSpriteFromThis)
+        {
+            spriteRenderer.sprite = sprites[lastIndex];
+        }
     }
 
     private int GetIndex(float angle)

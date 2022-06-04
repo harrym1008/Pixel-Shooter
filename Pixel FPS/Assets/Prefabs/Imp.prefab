@@ -14,13 +14,14 @@ GameObject:
   - component: {fileID: 7008243296631615387}
   - component: {fileID: 7008243296631615385}
   - component: {fileID: 7008243296631615389}
+  - component: {fileID: 7147668732103095619}
   m_Layer: 7
   m_Name: Imp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7008243296631615382
 Transform:
   m_ObjectHideFlags: 0
@@ -29,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7008243296631615383}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.75, y: 1, z: -34.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7008243297799301158}
@@ -105,7 +106,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sightLocation: {x: 0, y: 0.5, z: 0}
-  maxSeeDistance: 32
   maxSearchTime: {x: 1.5, y: 2.5}
   environment:
     serializedVersion: 2
@@ -126,6 +126,23 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7147668732103095619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7008243296631615383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 271852a21d121124eb0835bb99956be8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  armour: 0
+  protectionLevel: 0
+  isDead: 0
+  animator: {fileID: 7008243296631615386}
 --- !u!1 &7008243297524124128
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +214,7 @@ MonoBehaviour:
   m_shaderTagList: []
   m_renderPassEvent: 300
   m_perObjectData: 0
-  m_stencilPass: {fileID: 0}
+  m_stencilPass: {fileID: 2100000, guid: e967173267ec34715b98906ebcae0b8c, type: 2}
   m_stencilTestOptions: 0
 --- !u!1 &7008243297799301154
 GameObject:
@@ -311,6 +328,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myParent: {fileID: 7008243296631615382}
   spriteRenderer: {fileID: 7008243297799301159}
+  setSpriteFromThis: 0
   sprites:
   - {fileID: 5703692979728066001, guid: 2c63be9213d2e1846b986a5b84222883, type: 3}
   - {fileID: 36955857023604024, guid: 2c63be9213d2e1846b986a5b84222883, type: 3}

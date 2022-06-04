@@ -15,11 +15,34 @@ public class BulletBehaviour : MonoBehaviour
     float totalDistanceTravelled;
     float upperDamage, lowerDamage;
 
+    public BulletData bulletData = null;
+    public GameObject bulletHole;
+
+    private bool killing = false;
+
     private void Start()
     {
+        UpdateData();
+
         spawnLocation = transform.position;
         upperDamage = RNG.RangeBetweenVector2(upperDamageRange);
         lowerDamage = RNG.RangeBetweenVector2(lowerDamageRange);
+    }
+
+    void UpdateData()
+    {
+        if (killing) { return; } 
+
+        if (bulletData != null)
+        {
+            if (bulletData.isNull) { return; }
+
+            effectiveRange = bulletData.effectiveRange;
+            maximumRange = bulletData.maximumRange;
+            velocity = bulletData.velocity;
+            upperDamageRange = bulletData.upperDamageRange;
+            lowerDamageRange = bulletData.lowerDamageRange;
+        }
     }
 
 
@@ -33,20 +56,31 @@ public class BulletBehaviour : MonoBehaviour
 
         if (obstruction.hitSomething)
         {
-            print(GetDamage(obstruction.advanceTo));
-
-            if (obstruction.collider.TryGetComponent(out Health targetHealth))
+            if (obstruction.collider.TryGetComponent(out Target target))
             {
+                int damage = Mathf.RoundToInt(GetDamage(obstruction.advanceTo));
+                target.InflictDMG(damage);
+            }
+            else
+            {
+                Destroy(Instantiate(bulletHole, obstruction.raycastHit.point,
+                    Quaternion.LookRotation(obstruction.raycastHit.normal)), 120f);
+                
             }
 
-            Destroy(gameObject);
+            killing = true;
+            Invoke(nameof(DestroyMe), Time.deltaTime * 2);
         }
 
         if (totalDistanceTravelled > maximumRange)
         {
-            print("Over max range, killing this bullet");
             Destroy(gameObject);
         }
+    }
+
+    private void DestroyMe()
+    {
+        Destroy(gameObject);
     }
 
 
@@ -100,4 +134,16 @@ public class Obstruction
     public RaycastHit raycastHit;
     public Collider collider = null;
     public Vector3 advanceTo = new Vector3();
+}
+
+[System.Serializable]
+public class BulletData
+{
+    public float effectiveRange;
+    public float maximumRange;
+    public float velocity;
+    public Vector2 upperDamageRange;
+    public Vector2 lowerDamageRange;
+
+    public bool isNull = false;
 }

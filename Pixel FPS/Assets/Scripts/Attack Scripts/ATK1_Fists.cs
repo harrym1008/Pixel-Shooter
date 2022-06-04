@@ -8,6 +8,7 @@ public class ATK1_Fists : MonoBehaviour
 
     [SerializeField] Animator animator;
     [SerializeField] string[] strings;
+    [SerializeField] Vector2 damageRange;
 
     [SerializeField] float attackTime = 1f;
     [SerializeField] float speed = 1f;
@@ -42,7 +43,7 @@ public class ATK1_Fists : MonoBehaviour
 
     private IEnumerator ThrowHands()
     {
-        audioSource.PlayOneShot(sfx[RNG.Next(0, 2)]);
+        PlaySound(RNG.Next(0, 2));
 
         canThrowHands = false;
         CheckToShowIdleHand();
@@ -127,14 +128,26 @@ public class ATK1_Fists : MonoBehaviour
         if (Physics.Raycast(fireAngle.position, fireAngle.forward * 180f, 
             out RaycastHit hit, reach, layerMasks[0]))
         {
-            print($"I hit {hit.collider.gameObject}");
-            Invoke(nameof(PlayBoofSound), attackTime * 0.4f / speed);
+            if (hit.collider.TryGetComponent(out Target target))
+            {
+                target.InflictDMG( Mathf.RoundToInt(RNG.RangeBetweenVector2(damageRange)) );
+                print($"I hit {hit.collider.gameObject}");
+            }
+            PlaySound(3);
+
         }
     }
 
-    private void PlayBoofSound()
+    private void PlaySound(int soundID, bool playOneShot = false)
     {
-        audioSource.PlayOneShot(sfx[3]);
+        if (playOneShot)
+        {
+            audioSource.PlayOneShot(sfx[soundID]);
+            return;
+        }
+
+        audioSource.clip = sfx[soundID];
+        audioSource.Play();
     }
 
 }

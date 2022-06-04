@@ -20,13 +20,13 @@ public class WeaponSwitcher : MonoBehaviour
 
     void SwitchWeapon(int weapon)
     {
+        print($"Switching {weapon}");
+
         attackParents[currentWeapon].SetActive(false);
         currentWeapon += weapon;
 
         if (currentWeapon < 0) { currentWeapon = maxWeapons - 1; }
         if (currentWeapon >= maxWeapons) { currentWeapon = 0; }
-
-        print($"Switching to weapon {currentWeapon}");
 
         attackParents[currentWeapon].SetActive(true);
 
