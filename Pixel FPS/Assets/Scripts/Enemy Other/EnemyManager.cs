@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
+    public static Difficulty difficulty = Difficulty.High;
+
+
     Enemy[] enemiesInLevel;
     Transform player;
 
@@ -38,11 +41,20 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (Enemy enemy in enemiesInLevel)
         {
-            if (!enemy.target.isDead && !enemy.targetInSight)
+            if (!enemy.myTarget.isDead && !enemy.targetInSight)
             {
                 //print("Running look tick");
                 enemy.LookForPlayer(player);
             }
         }
+    }
+
+
+
+    public enum Difficulty
+    {
+        Normal,
+        High,
+        Low
     }
 }

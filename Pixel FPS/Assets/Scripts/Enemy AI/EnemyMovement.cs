@@ -50,16 +50,13 @@ public class EnemyMovement : MonoBehaviour
 
     private void Update()
     {
-        if (myTarget.isDead)
-        {
+        if (myTarget.isDead || !movement)
             return;
-        }
+
 
         if (targetTransform != null)
             targetLocation = targetTransform.position;
 
-        if (!movement)
-            return;
 
         if (targetInSight)
         {
@@ -107,14 +104,15 @@ public class EnemyMovement : MonoBehaviour
         if (!enabled)
         {
             movement = false;
-            agent.isStopped = true;
             StopCoroutine(Wandering());
+            agent.SetDestination(transform.position);
+            agent.isStopped = true;
         }
         else
         {
             movement = true;
-            agent.isStopped = false;
             StartCoroutine(Wandering());
+            agent.isStopped = false;
         }
     }
 

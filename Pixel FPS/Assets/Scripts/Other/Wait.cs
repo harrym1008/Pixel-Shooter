@@ -2,7 +2,7 @@ using UnityEngine;
 
 public static class Wait
 {
-    public static float? Frame = null;
+    public static WaitForEndOfFrame Frame = new WaitForEndOfFrame();
 
 
     public static WaitForSeconds Seconds(float seconds)

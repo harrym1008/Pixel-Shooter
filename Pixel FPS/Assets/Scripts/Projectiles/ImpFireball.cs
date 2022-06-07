@@ -10,6 +10,7 @@ public class ImpFireball : MonoBehaviour
     [SerializeField] LayerMask environment;
 
     [Header("Fireball Parameters")]
+    [SerializeField] float radius;
     [SerializeField] bool active = true;
     [SerializeField] float speed;
     [SerializeField] float endAnimTime;
@@ -19,8 +20,17 @@ public class ImpFireball : MonoBehaviour
     [SerializeField] ParticleSystem[] PS;
     [SerializeField] AudioClip[] sfx;
 
+    public Transform spawner;
 
+    private void Start()
+    {
+        /*Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
 
+        foreach (Collider collider in colliders)
+        {
+            Physics.IgnoreCollision(GetComponent<Collider>(), collider);
+        }*/
+    }
 
 
     private void Update()
@@ -32,9 +42,9 @@ public class ImpFireball : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        int layer = collision.gameObject.layer;
+        int layer = other.gameObject.layer;
 
         // Collided with player
         if (player == (player | (1 << layer)))
@@ -44,6 +54,8 @@ public class ImpFireball : MonoBehaviour
         // Collided with another enemy
         else if (enemies == (enemies | (1 << layer)))
         {
+            if (other.transform == spawner)   // So the fireball doesn't hit the imp it came from
+                return;
             print("Hit another enemy");
         }
         // Collided with the environment
