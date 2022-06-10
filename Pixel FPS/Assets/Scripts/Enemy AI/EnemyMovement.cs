@@ -105,14 +105,13 @@ public class EnemyMovement : MonoBehaviour
         {
             movement = false;
             StopCoroutine(Wandering());
-            agent.SetDestination(transform.position);
             agent.isStopped = true;
         }
         else
         {
+            agent.isStopped = false;
             movement = true;
             StartCoroutine(Wandering());
-            agent.isStopped = false;
         }
     }
 
@@ -151,7 +150,7 @@ public class EnemyMovement : MonoBehaviour
 
             Vector3 walkPoint = new Vector3(stationedPosition.x + randomX, stationedPosition.y, stationedPosition.z + randomZ);
 
-            print(walkPoint);
+            //print(walkPoint);
             if (Physics.Raycast(walkPoint, -transform.up, out RaycastHit hit, 2f, environment)
                 /*|| !Physics.Linecast(walkPoint, transform.position, environment)*/)
             {
@@ -186,5 +185,5 @@ public class EnemyMovement : MonoBehaviour
                 Gizmos.DrawLine(agent.path.corners[i], agent.path.corners[i + 1]);
             }
         } catch { }
-    }
+    }    
 }

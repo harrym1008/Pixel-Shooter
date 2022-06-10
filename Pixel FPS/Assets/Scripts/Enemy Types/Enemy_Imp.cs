@@ -11,10 +11,19 @@ public class Enemy_Imp : Enemy
     [SerializeField] float attackWaitBeforeSpawn;
     [SerializeField] Vector3 spawnLocation;
     [SerializeField] GameObject impFireball;
+    [SerializeField] LayerMask attackLayerMask;
+
+
+    public override void Start()
+    {
+        base.Start();
+        bloodType = BloodType.Crimson;
+    }
 
 
     public override void Die()
     {
+        enemyMovement.SetMovement(false);
         GetComponent<Animator>().SetBool("Dead", true);
         GetComponent<Animator>().SetTrigger("Die");
 
@@ -77,7 +86,7 @@ public class Enemy_Imp : Enemy
 
     bool AttackCheck()
     {
-        return LineOfSightCheck(attackingTarget.position, sightDistance);
+        return LineOfSightCheck(attackingTarget.position, sightDistance, attackLayerMask);
     }
 
     IEnumerator Attack()

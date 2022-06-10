@@ -16,6 +16,8 @@ public class Controls : MonoBehaviour
 
         controls = new InputMaster();
         DontDestroyOnLoad(gameObject);
+
+        gameObject.name = "*** CONTROLS ***";
     }
 
     private void OnEnable()
