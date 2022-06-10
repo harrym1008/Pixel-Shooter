@@ -18,11 +18,13 @@ public class Manager : MonoBehaviour
         }
 
         managersManager = this;
-        DontDestroyOnLoad(gameObject);
-
-        Assign();
 
         gameObject.name = "*** MANAGER ***";
+        transform.parent = null;
+
+        DontDestroyOnLoad(gameObject);
+        Assign();
+
     }
 
 

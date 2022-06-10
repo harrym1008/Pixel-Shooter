@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7008243296631615386}
   - component: {fileID: 7008243296631615384}
   - component: {fileID: 7008243296631615389}
+  - component: {fileID: 7446180723786089682}
   m_Layer: 7
   m_Name: Imp
   m_TagString: Untagged
@@ -52,6 +53,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myTarget: {fileID: 0}
+  momentum: {fileID: 0}
+  bloodType: 0
   targetInSight: 0
   currentlyInfighting: 0
   seeOffsetY: 0.4
@@ -83,6 +86,7 @@ MonoBehaviour:
   armour: 0
   protectionLevel: 0
   isDead: 0
+  enemy: {fileID: 0}
 --- !u!114 &7008243296631615387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,6 +176,21 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7446180723786089682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7008243296631615383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7241c9ec50fa9334695c73f8af9a637d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterControllerBased: 0
+  mass: 6
+  damping: 5
 --- !u!1 &7008243297524124128
 GameObject:
   m_ObjectHideFlags: 0

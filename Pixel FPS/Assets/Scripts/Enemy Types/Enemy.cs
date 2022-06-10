@@ -5,10 +5,12 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public Target myTarget;
+    public Momentum momentum;
+
     protected Transform attackingTarget = null;
     protected EnemyMovement enemyMovement;
     protected Animator animator;
-    protected BloodType bloodType;
+    public BloodManager.BloodType bloodType;
 
     [Header("Looking for player parameters")]
     public bool targetInSight = false;
@@ -21,6 +23,7 @@ public class Enemy : MonoBehaviour
     public virtual void Start()
     {
         myTarget = GetComponent<Target>();
+        momentum = GetComponent<Momentum>();
         enemyMovement = GetComponent<EnemyMovement>();
         animator = GetComponent<Animator>();
     }
@@ -69,9 +72,5 @@ public class Enemy : MonoBehaviour
 
 
 
-    public enum BloodType
-    {
-        Crimson,
-        Lime,
-    }
+    
 }

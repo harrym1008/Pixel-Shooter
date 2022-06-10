@@ -37,6 +37,21 @@ public static class RNG
     /// <param name="lower">The inclusive lower bound of the integer</param>
     /// <param name="upper">The inclusive upper bound of the integer</param>
     /// <returns></returns>
+    public static int NextInclusive(int lower, int upper)
+    {
+        int difference = upper - lower;
+        double number = NextDouble();
+
+        return Mathf.RoundToInt(lower + difference * (float)number);
+    }
+
+
+    /// <summary>
+    /// Returns an integer between the inclusive variables "lower" and "upper".
+    /// </summary>
+    /// <param name="lower">The inclusive lower bound of the integer</param>
+    /// <param name="upper">The inclusive upper bound of the integer</param>
+    /// <returns></returns>
     public static int FromTo(int lower, int upper)
     {
         int difference = upper - lower;

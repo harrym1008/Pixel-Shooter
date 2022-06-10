@@ -17,7 +17,7 @@ public class Enemy_Imp : Enemy
     public override void Start()
     {
         base.Start();
-        bloodType = BloodType.Crimson;
+        bloodType = BloodManager.BloodType.Crimson;
     }
 
 

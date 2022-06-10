@@ -10,7 +10,7 @@ public class Target : MonoBehaviour
     public float protectionLevel;
 
     public bool isDead = false;
-    Enemy enemy = null;
+    public Enemy enemy = null;
 
     private void Start()
     {

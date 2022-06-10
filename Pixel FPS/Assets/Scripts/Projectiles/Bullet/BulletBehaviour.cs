@@ -60,6 +60,21 @@ public class BulletBehaviour : MonoBehaviour
             {
                 int damage = Mathf.RoundToInt(GetDamage(obstruction.advanceTo));
                 target.InflictDMG(damage);
+
+                if (target.isDead)
+                {
+                    Manager.blood.CreateBigBlood(obstruction.raycastHit.point,
+                        Quaternion.LookRotation(obstruction.raycastHit.normal), target.enemy.bloodType);
+
+                    target.enemy.momentum.AddImpact(obstruction.raycastHit.normal, velocity * -0.02f);
+                }
+                else
+                {
+                    Manager.blood.CreateSmallBlood(obstruction.raycastHit.point,
+                        Quaternion.LookRotation(obstruction.raycastHit.normal), target.enemy.bloodType);
+
+                    target.enemy.momentum.AddImpact(obstruction.raycastHit.normal, velocity * -0.01f);
+                }
             }
             else
             {

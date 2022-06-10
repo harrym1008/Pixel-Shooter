@@ -19,7 +19,7 @@ public class Momentum : MonoBehaviour
     }
 
 
-    void Update()
+    void LateUpdate()
     {
         if (characterControllerBased)
         {
