@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 groundCheck = Vector3.zero;
     [SerializeField] float groundDistance;
+    [SerializeField] Vector2 belowMapFailsafeData;
 
     public Controls controlsPrefab;
     public LayerMask groundMask;
@@ -70,8 +71,11 @@ public class PlayerMovement : MonoBehaviour
             speed = runSpeed;
         }
 
-
+        
         isGrounded = Physics.CheckSphere(transform.position + groundCheck, groundDistance, groundMask);
+        
+        //isGrounded = Physics.Linecast(transform.position, transform.position - groundDistance * Vector3.down, groundMask);
+        //Debug.DrawLine(transform.position, transform.position - groundDistance * Vector3.down, Color.cyan);
 
         if (isGrounded && velocity.y < 0)
         {
@@ -110,6 +114,14 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
+
+
+        if (transform.position.y < belowMapFailsafeData.x)
+        {
+            controller.enabled = false;
+            transform.position = new Vector3(transform.position.x, belowMapFailsafeData.y, transform.position.z);
+            controller.enabled = true;
+        }
     }
 
 

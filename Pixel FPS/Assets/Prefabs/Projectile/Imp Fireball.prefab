@@ -9864,10 +9864,11 @@ MonoBehaviour:
   environment:
     serializedVersion: 2
     m_Bits: 8
-  radius: 0
+  lifetime: 10
   active: 1
-  speed: 10
+  speed: 16
   endAnimTime: 0.7
+  damageRange: {x: 20, y: 25}
   audioSource: {fileID: 0}
   PS:
   - {fileID: 1306678629181340920}

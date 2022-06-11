@@ -7,6 +7,8 @@ public class Enemy : MonoBehaviour
     public Target myTarget;
     public Momentum momentum;
 
+    [SerializeField] protected Vector2 spawnHealthRange;
+
     protected Transform attackingTarget = null;
     protected EnemyMovement enemyMovement;
     protected Animator animator;
@@ -26,6 +28,8 @@ public class Enemy : MonoBehaviour
         momentum = GetComponent<Momentum>();
         enemyMovement = GetComponent<EnemyMovement>();
         animator = GetComponent<Animator>();
+
+        myTarget.health = Mathf.RoundToInt(RNG.RangeBetweenVector2(spawnHealthRange));
     }
 
 
@@ -65,7 +69,13 @@ public class Enemy : MonoBehaviour
         targetInSight = true;
     }
 
-    public virtual void Die() { }
+    public virtual void Die()
+    {
+        enemyMovement.agent.enabled = false;
+        momentum.dead = true;
+    }
+
+
     public virtual void Hurt() { }
     public virtual void ChangeTarget(Target target) { }
 

@@ -18,6 +18,7 @@ public class SpriteAngle : MonoBehaviour
 
     public float angle;
     public int lastIndex;
+    public bool turnOffFlipping = false;
 
 
     public void UpdateCameraTransform(Transform newCamera)
@@ -45,7 +46,7 @@ public class SpriteAngle : MonoBehaviour
         lastIndex = GetIndex(angle);
 
         // Set as sprite image and set flip param
-        spriteRenderer.flipX = !flipSprites[lastIndex];
+        spriteRenderer.flipX = !turnOffFlipping ? !flipSprites[lastIndex] : false;
 
         if (setSpriteFromThis)
         {

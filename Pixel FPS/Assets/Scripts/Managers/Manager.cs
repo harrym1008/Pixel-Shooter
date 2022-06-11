@@ -8,6 +8,8 @@ public class Manager : MonoBehaviour
 
     public static EnemyManager enemy;
     public static BloodManager blood;
+    public static PlayerRecoil playerRecoil;
+    public static InputMaster controls;
 
     private void Awake()
     {
@@ -23,14 +25,24 @@ public class Manager : MonoBehaviour
         transform.parent = null;
 
         DontDestroyOnLoad(gameObject);
-        Assign();
+        AssignMine();
+    }
 
+    private void Start()
+    {
+        AssignRest();
     }
 
 
-    void Assign()
+    void AssignMine()
     {
         enemy = GetComponent<EnemyManager>();
         blood = GetComponent<BloodManager>();
+    }
+
+    void AssignRest()
+    {
+        playerRecoil = PlayerRecoil.playerRecoil;
+        controls = Controls.controls;
     }
 }

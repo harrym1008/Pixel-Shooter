@@ -7,6 +7,10 @@ public class PlayerRecoil : MonoBehaviour
     Vector3 currentRotation;
     Vector3 targetRotation;
 
+    public Vector3 positionalOffset;
+    public Vector3 rotationalOffset;
+
+
     [SerializeField] private Vector3 recoil;
 
     [SerializeField] private float snappiness;
@@ -23,15 +27,17 @@ public class PlayerRecoil : MonoBehaviour
 
     void Update()
     {
-        targetRotation = Vector3.MoveTowards(targetRotation, Vector3.zero, returnSpeed * Time.deltaTime);
+        targetRotation = Vector3.Lerp(targetRotation, Vector3.zero, returnSpeed * Time.deltaTime);
         currentRotation = Vector3.Slerp(currentRotation, targetRotation, snappiness * Time.fixedDeltaTime);
 
-        transform.localRotation = Quaternion.Euler(currentRotation);
-
+        transform.localRotation = Quaternion.Euler(currentRotation + rotationalOffset);
+        
         if (!recoilEnabled)
         {
             transform.localEulerAngles = new Vector3(0f, 0f, transform.localEulerAngles.z);
         }
+
+        transform.localPosition = positionalOffset;
     }
 
 

@@ -66,14 +66,14 @@ public class BulletBehaviour : MonoBehaviour
                     Manager.blood.CreateBigBlood(obstruction.raycastHit.point,
                         Quaternion.LookRotation(obstruction.raycastHit.normal), target.enemy.bloodType);
 
-                    target.enemy.momentum.AddImpact(obstruction.raycastHit.normal, velocity * -0.02f);
+                    target.enemy.momentum.AddImpact(obstruction.raycastHit.normal, velocity * -0.05f);
                 }
                 else
                 {
                     Manager.blood.CreateSmallBlood(obstruction.raycastHit.point,
                         Quaternion.LookRotation(obstruction.raycastHit.normal), target.enemy.bloodType);
 
-                    target.enemy.momentum.AddImpact(obstruction.raycastHit.normal, velocity * -0.01f);
+                    target.enemy.momentum.AddImpact(obstruction.raycastHit.normal, velocity * -0.03f);
                 }
             }
             else

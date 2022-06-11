@@ -10,10 +10,11 @@ public class ImpFireball : MonoBehaviour
     [SerializeField] LayerMask environment;
 
     [Header("Fireball Parameters")]
-    [SerializeField] float radius;
+    [SerializeField] float lifetime;
     [SerializeField] bool active = true;
     [SerializeField] float speed;
     [SerializeField] float endAnimTime;
+    [SerializeField] Vector2 damageRange;
 
     [Header("Sound and Particle Systems")]
     [SerializeField] AudioSource audioSource;
@@ -37,7 +38,13 @@ public class ImpFireball : MonoBehaviour
     {
         if (active)
         {
+            lifetime -= Time.deltaTime;
             transform.position += transform.forward * Time.deltaTime * speed;
+
+            if (lifetime <= 0f)
+            {
+                Die();
+            }
         }
     }
 
@@ -45,40 +52,48 @@ public class ImpFireball : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         int layer = other.gameObject.layer;
+        bool causeDamage = false;
 
         // Collided with player
         if (player == (player | (1 << layer)))
         {
-            print("Hit the player");
+            causeDamage = true;
         }
         // Collided with another enemy
         else if (enemies == (enemies | (1 << layer)))
         {
             if (other.transform == spawner)   // So the fireball doesn't hit the imp it came from
                 return;
-            print("Hit another enemy");
+            causeDamage = true;
         }
         // Collided with the environment
         else if (environment == (environment | (1 << layer)))
         {
-            print("Hit the environment");
+            causeDamage = false;
         }
         // Hit something, but not of relevance
         else
             return;
 
+        if (causeDamage)
+        {
+            other.GetComponent<Target>().InflictDMG(Mathf.RoundToInt(RNG.RangeBetweenVector2(damageRange)));
+        }
+
+        Die();
+        
+    }
+
+
+    void Die()
+    { 
         active = false;
-        Invoke(nameof(KillMe), endAnimTime);
 
         PS[0].Stop();
         PS[1].Stop();
         PS[2].Play();
 
         Destroy(GetComponent<Collider>());
-    }
-
-    void KillMe()
-    {
-        Destroy(gameObject);
+        Destroy(gameObject, endAnimTime);
     }
 }

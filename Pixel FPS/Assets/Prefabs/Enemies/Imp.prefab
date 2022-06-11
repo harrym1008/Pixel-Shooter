@@ -54,6 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myTarget: {fileID: 0}
   momentum: {fileID: 0}
+  spawnHealthRange: {x: 0, y: 0}
   bloodType: 0
   targetInSight: 0
   currentlyInfighting: 0
@@ -65,6 +66,8 @@ MonoBehaviour:
   sightDistance: 0
   attackTime: 0.68333334
   attackWaitBeforeSpawn: 0.4666667
+  meleeDamageRange: {x: 30, y: 45}
+  meleeRange: 1.25
   spawnLocation: {x: 0, y: 0.046, z: 0.442}
   impFireball: {fileID: 1306678629100627431, guid: b242f62a0d1adf14cb9da37e5afcf93e, type: 3}
   attackLayerMask:
@@ -87,6 +90,8 @@ MonoBehaviour:
   protectionLevel: 0
   isDead: 0
   enemy: {fileID: 0}
+  isPlayer: 0
+  text: {fileID: 0}
 --- !u!114 &7008243296631615387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,6 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetInSight: 0
+  agent: {fileID: 0}
   sightLocation: {x: 0, y: 0.5, z: 0}
   maxSearchTime: {x: 1.5, y: 2.5}
   environment:
@@ -191,6 +197,9 @@ MonoBehaviour:
   characterControllerBased: 0
   mass: 6
   damping: 5
+  agentHeight: 29
+  agent: 1
+  dead: 0
 --- !u!1 &7008243297524124128
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,3 +398,4 @@ MonoBehaviour:
   flipSprites: 0000000000010101
   angle: 0
   lastIndex: 0
+  turnOffFlipping: 0

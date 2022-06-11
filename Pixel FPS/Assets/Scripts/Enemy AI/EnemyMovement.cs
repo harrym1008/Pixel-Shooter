@@ -14,7 +14,7 @@ public class EnemyMovement : MonoBehaviour
     public bool targetInSight;
     float searchTime;
 
-    NavMeshAgent agent;
+    public NavMeshAgent agent;
     Target myTarget;
 
     Vector3 targetLocation;
@@ -101,7 +101,7 @@ public class EnemyMovement : MonoBehaviour
 
     public void SetMovement(bool enabled)
     {
-        if (!enabled)
+        if (!enabled || myTarget.isDead)
         {
             movement = false;
             StopCoroutine(Wandering());

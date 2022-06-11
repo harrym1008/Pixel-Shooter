@@ -1,21 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Momentum : MonoBehaviour
 {
     public bool characterControllerBased;
 
-    public float mass = 3.0f;
-    public float damping = 5f;
+    [SerializeField] float mass = 3.0f;
+    [SerializeField] float damping = 5f;
+    float agentHeight;
 
     Vector3 impact = Vector3.zero;
 
     private CharacterController character;
+    [SerializeField] bool agent;
+    public bool dead;
 
     void Start()
     {
         character = GetComponent<CharacterController>();
+
+        if (TryGetComponent(out NavMeshAgent nmagent))
+        {
+            agentHeight = nmagent.height / 2;
+        }
     }
 
 
@@ -27,11 +36,18 @@ public class Momentum : MonoBehaviour
         }
         else
         {
-            if (impact.magnitude > 0.2f) transform.Translate(impact * Time.deltaTime, Space.World);
+            if (impact.magnitude > 0.2f) transform.position += impact * Time.deltaTime;
         }
 
-
         impact = Vector3.Lerp(impact, Vector3.zero, damping * Time.deltaTime);
+
+
+
+        if (impact.magnitude > 0.2f && agent && dead)
+        {
+            if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 256f, NavMesh.AllAreas))
+                transform.position = hit.position + Vector3.up * agentHeight;
+        }
 
     }
 

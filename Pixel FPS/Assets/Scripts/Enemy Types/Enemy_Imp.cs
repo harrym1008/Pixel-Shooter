@@ -9,6 +9,10 @@ public class Enemy_Imp : Enemy
     [SerializeField] float sightDistance;
     [SerializeField] float attackTime;
     [SerializeField] float attackWaitBeforeSpawn;
+
+    [SerializeField] Vector2 meleeDamageRange;
+    [SerializeField] float meleeRange;
+
     [SerializeField] Vector3 spawnLocation;
     [SerializeField] GameObject impFireball;
     [SerializeField] LayerMask attackLayerMask;
@@ -23,6 +27,8 @@ public class Enemy_Imp : Enemy
 
     public override void Die()
     {
+        transform.Find("Sprite").GetComponent<SpriteAngle>().turnOffFlipping = true;
+
         enemyMovement.SetMovement(false);
         GetComponent<Animator>().SetBool("Dead", true);
         GetComponent<Animator>().SetTrigger("Die");
@@ -30,6 +36,8 @@ public class Enemy_Imp : Enemy
         GetComponent<Collider>().enabled = false;
 
         StopCoroutine(Attack());
+
+        base.Die();
     }
 
     public override void ChangeTarget(Target target)
@@ -64,7 +72,8 @@ public class Enemy_Imp : Enemy
 
             if (waiting <= 0f)
             {
-                waiting = AttackWaitTime();
+                bool melee = IsMeleeAttack();
+                waiting = melee ? 0f : AttackWaitTime();
 
                 if (AttackCheck())
                 {
@@ -72,6 +81,10 @@ public class Enemy_Imp : Enemy
                     enemyMovement.SetMovement(false);
                     StartCoroutine(Attack());
                     yield return Wait.Seconds(attackTime);
+
+                    if (myTarget.isDead)
+                        yield break;
+
                     enemyMovement.SetMovement(true);
                 }
 
@@ -111,11 +124,26 @@ public class Enemy_Imp : Enemy
 
         FaceTarget(true);
 
-        ImpFireball ball = Instantiate(impFireball, spawnAt, transform.rotation).GetComponent<ImpFireball>();
-        ball.spawner = transform;
-
+        if (IsMeleeAttack())
+        {
+            attackingTarget.GetComponent<Target>().InflictDMG(Mathf.RoundToInt(RNG.RangeBetweenVector2(meleeDamageRange)));
+        }
+        else
+        {
+            ImpFireball ball = Instantiate(impFireball, spawnAt, transform.rotation).GetComponent<ImpFireball>();
+            ball.spawner = transform;
+        }
+               
         FaceTarget(false);
     }
+
+
+    bool IsMeleeAttack()
+    {
+        return Vector3.Distance(attackingTarget.transform.position, transform.position) <= meleeRange;
+    }
+
+
 
 
     float AttackWaitTime()
