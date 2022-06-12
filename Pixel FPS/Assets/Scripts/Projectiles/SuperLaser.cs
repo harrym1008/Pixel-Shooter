@@ -45,7 +45,8 @@ public class SuperLaser : MonoBehaviour
             Destroy(hitObjectTransform.gameObject);
         }
 
-        Invoke(nameof(DealDamage), 0.2f);
+        Invoke(nameof(DealDamage), 0.05f);
+        Destroy(gameObject, 1.5f);
     }
 
 
@@ -77,7 +78,9 @@ public class SuperLaser : MonoBehaviour
 
     public void DealDamage()
     {
-        Collider[] targetColliders = Physics.OverlapBox(transform.position - shape.position, shape.scale / 2, Quaternion.identity, targets);
+        //Debug.DrawRay(transform.position, Quaternion.LookRotation(transform.right).eulerAngles, Color.magenta, 0.5f);
+
+        Collider[] targetColliders = Physics.OverlapBox(transform.position - shape.position, shape.scale / 2, Quaternion.LookRotation(transform.forward), targets);
 
         foreach (Target target in GetTargets(targetColliders))
         {
