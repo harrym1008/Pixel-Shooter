@@ -30,6 +30,8 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
 
         myTarget.health = Mathf.RoundToInt(RNG.RangeBetweenVector2(spawnHealthRange));
+
+        animator.SetFloat("DieSpeedFactor", RNG.Range(0.95f, 1.05f));
     }
 
 

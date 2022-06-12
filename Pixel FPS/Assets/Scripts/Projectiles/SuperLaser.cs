@@ -15,6 +15,9 @@ public class SuperLaser : MonoBehaviour
     public LayerMask targets;
     public Transform spawner;
 
+    public Vector2Int closeDamageRange;
+    public Vector2Int damageRange;
+
 
     private void Start()
     {
@@ -42,13 +45,7 @@ public class SuperLaser : MonoBehaviour
             Destroy(hitObjectTransform.gameObject);
         }
 
-        Collider[] targetColliders = Physics.OverlapBox(transform.position - shape.position, shape.scale / 2, Quaternion.identity, targets);
-
-        foreach (Target target in GetTargets(targetColliders))
-        {
-            target.InflictDMG(120);
-            target.GetComponent<Momentum>().AddImpact(-transform.forward + Vector3.up * RNG.RangePosNeg(20), 120f);
-        }
+        Invoke(nameof(DealDamage), 0.2f);
     }
 
 
@@ -75,5 +72,26 @@ public class SuperLaser : MonoBehaviour
         }
 
         return targets.ToArray();
+    }
+
+
+    public void DealDamage()
+    {
+        Collider[] targetColliders = Physics.OverlapBox(transform.position - shape.position, shape.scale / 2, Quaternion.identity, targets);
+
+        foreach (Target target in GetTargets(targetColliders))
+        {
+            int DMG = Vector3.Distance(target.transform.position, transform.position) <= 5f
+                ? Mathf.RoundToInt(RNG.RangeBetweenVector2(closeDamageRange))
+                : Mathf.RoundToInt(RNG.RangeBetweenVector2(damageRange));
+
+            target.InflictDMG(DMG);
+
+            if (!target.isPlayer)
+            {
+                target.enemy.momentum.AddImpact(transform.forward + RNG.RandomVector3(y: false) * 0.5f, DMG);
+            }
+        }
+
     }
 }

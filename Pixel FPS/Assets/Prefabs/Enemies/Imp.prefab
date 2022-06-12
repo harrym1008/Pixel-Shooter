@@ -54,7 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myTarget: {fileID: 0}
   momentum: {fileID: 0}
-  spawnHealthRange: {x: 0, y: 0}
+  spawnHealthRange: {x: 91, y: 109}
   bloodType: 0
   targetInSight: 0
   currentlyInfighting: 0
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   armour: 0
-  protectionLevel: 0
+  protectionLevel: 0.9
   isDead: 0
   enemy: {fileID: 0}
   isPlayer: 0
@@ -195,9 +195,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterControllerBased: 0
-  mass: 6
-  damping: 5
-  agentHeight: 29
+  mass: 10
+  damping: 3
   agent: 1
   dead: 0
 --- !u!1 &7008243297524124128
