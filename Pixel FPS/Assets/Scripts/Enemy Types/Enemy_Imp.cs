@@ -23,7 +23,7 @@ public class Enemy_Imp : Enemy
         base.Start();
         bloodType = BloodManager.BloodType.Crimson;
 
-        animator.SetFloat("DieSpeedFactor", RNG.Range(0.95f, 1.05f));
+        animator.SetFloat("DieSpeedFactor", RNG.Range(0.8f, 1.2f));
     }
 
 
