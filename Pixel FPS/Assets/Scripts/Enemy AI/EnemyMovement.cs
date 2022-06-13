@@ -165,9 +165,6 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (Camera.current != Camera.main && Camera.current != SceneView.lastActiveSceneView.camera) return;
-
-
         if (targetInSight)
             Gizmos.color = Color.green;
         else

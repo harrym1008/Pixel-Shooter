@@ -15,12 +15,17 @@ public class SuperLaser : MonoBehaviour
     public LayerMask targets;
     public Transform spawner;
 
+    public BoxCollider boxTrigger;
+    ColliderContainer container;
+
     public Vector2Int closeDamageRange;
     public Vector2Int damageRange;
 
 
     private void Start()
     {
+        container = boxTrigger.GetComponent<ColliderContainer>();
+
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Debug.DrawRay(transform.position, forward * maxLength, Color.cyan, 5f);
 
@@ -33,12 +38,17 @@ public class SuperLaser : MonoBehaviour
         shape.position = new Vector3(0f, 0f, length / 2f);
         shape.scale = new Vector3(0.1f, 0.1f, length);
 
+        mainPS.Play();
+
+        boxTrigger.center = shape.position;
+        boxTrigger.size = new Vector3(0.5f, 0.5f, shape.scale.z);
+
         hitObjectTransform = transform.Find("Hit Object");
 
         if (ray)
         {
             hitObjectTransform.transform.position = hit.point;
-            hitObjectTransform.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(hit.normal), 0.5f);
+            hitObjectTransform.transform.rotation = Quaternion.LookRotation(hit.normal);  // Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(hit.normal), 0.5f);
         }
         else
         {
@@ -50,11 +60,7 @@ public class SuperLaser : MonoBehaviour
     }
 
 
-    /*private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.black;
-        Gizmos.DrawCube(transform.position - shape.position, shape.scale);
-    }*/
+
 
 
 
@@ -78,12 +84,13 @@ public class SuperLaser : MonoBehaviour
 
     public void DealDamage()
     {
-        //Debug.DrawRay(transform.position, Quaternion.LookRotation(transform.right).eulerAngles, Color.magenta, 0.5f);
-
-        Collider[] targetColliders = Physics.OverlapBox(transform.position - shape.position, shape.scale / 2, Quaternion.LookRotation(transform.forward), targets);
+        Collider[] targetColliders = container.GetColliders();
 
         foreach (Target target in GetTargets(targetColliders))
         {
+            if (target == null) { continue; }
+            if (targets != (targets | (1 << target.gameObject.layer))) { continue; }
+
             int DMG = Vector3.Distance(target.transform.position, transform.position) <= 5f
                 ? Mathf.RoundToInt(RNG.RangeBetweenVector2(closeDamageRange))
                 : Mathf.RoundToInt(RNG.RangeBetweenVector2(damageRange));

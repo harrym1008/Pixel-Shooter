@@ -4,7 +4,7 @@ using UnityEngine;
 public class ColliderContainer : MonoBehaviour
 {
     private List<Collider> colliders = new List<Collider>();
-    public List<Collider> GetColliders() { return colliders; }
+    public Collider[] GetColliders() { return colliders.ToArray(); }
 
     private void OnTriggerEnter(Collider other)
     {

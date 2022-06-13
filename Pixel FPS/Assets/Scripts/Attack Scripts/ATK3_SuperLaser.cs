@@ -32,12 +32,12 @@ public class ATK3_SuperLaser : MonoBehaviour
 
         animator.SetTrigger("Fire");
         Invoke(nameof(Spawn), 0.1f);
-        Invoke(nameof(EndReload), 0.5f);
+        Invoke(nameof(EndReload), 0.55f);
     }
 
     void Spawn()
     {
-        SuperLaser superLaser = Instantiate(laserObject, spawnPosition.position + Vector3.down * 0.6f,
+        SuperLaser superLaser = Instantiate(laserObject, spawnPosition.position + Vector3.down * 0.4f,
             Quaternion.LookRotation(spawnPosition.forward)).GetComponent<SuperLaser>();
         superLaser.spawner = player;
     }

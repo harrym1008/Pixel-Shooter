@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4531557248338908390}
   - component: {fileID: 3115747027319830381}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Front tracer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3990165130782134864}
   - component: {fileID: 3990165130782134871}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tracer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3990165130786204731}
   - component: {fileID: 3990165130786204724}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

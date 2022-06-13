@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1400789822632021109}
   - component: {fileID: 1400789822632021115}
   - component: {fileID: 1400789822632021114}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4873,7 +4873,7 @@ GameObject:
   - component: {fileID: 1400789822894391560}
   - component: {fileID: 1400789822894391566}
   - component: {fileID: 1400789822894391561}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9733,7 +9733,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1400789824398106670}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Explode
   m_TagString: Untagged
   m_Icon: {fileID: 0}

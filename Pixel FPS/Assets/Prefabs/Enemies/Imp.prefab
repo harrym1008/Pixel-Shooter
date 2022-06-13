@@ -195,7 +195,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterControllerBased: 0
-  mass: 10
+  massRange: {x: 62, y: 85}
+  mass: 0
   damping: 3
   agent: 1
   dead: 0

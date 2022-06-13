@@ -44,7 +44,7 @@ public class Target : MonoBehaviour
         int healthDamage = Mathf.RoundToInt(DMG * (1 - protectionLevel));
         int armourDamage = Mathf.RoundToInt(DMG * protectionLevel);
 
-        print($"{gameObject.name} took {DMG} damage");
+        //print($"{gameObject.name} took {DMG} damage");
 
         armour -= armourDamage;
         if (armour < 0)

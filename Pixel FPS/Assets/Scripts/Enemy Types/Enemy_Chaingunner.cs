@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy_Imp : Enemy
+public class Enemy_Chaingunner : Enemy
 {
-    [Header("Imp Parameters")]
+    [Header("Chaingunner Parameters")]
     [SerializeField] float sightDistance;
     [SerializeField] float attackTime;
     [SerializeField] float attackWaitBeforeSpawn;
@@ -14,7 +14,7 @@ public class Enemy_Imp : Enemy
     [SerializeField] float meleeRange;
 
     [SerializeField] Vector3 spawnLocation;
-    [SerializeField] GameObject impFireball;
+    [SerializeField] GameObject bulletObject;
     [SerializeField] LayerMask attackLayerMask;
 
 
@@ -136,7 +136,7 @@ public class Enemy_Imp : Enemy
         }
         else
         {
-            ImpFireball ball = Instantiate(impFireball, spawnAt, transform.rotation).GetComponent<ImpFireball>();
+            ImpFireball ball = Instantiate(bulletObject, spawnAt, transform.rotation).GetComponent<ImpFireball>();
             ball.spawner = transform;
         }
                
@@ -154,15 +154,7 @@ public class Enemy_Imp : Enemy
 
     float AttackWaitTime()
     {
-        switch (EnemyManager.difficulty)
-        {
-            case EnemyManager.Difficulty.High:
-                return RNG.Range(0.4f, 1.1f);
-            case EnemyManager.Difficulty.Low:
-                return RNG.Range(3f, 4.2f);
-            default:
-                return RNG.Range(1.5f, 2.8f);
-        }
+        return 0f;
     }
 
     void FaceTarget(bool allAngles = false)

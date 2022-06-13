@@ -6,7 +6,7 @@ using UnityEditor;
 public class SpriteAngle : MonoBehaviour
 {
     [SerializeField] Transform myParent;
-    Transform camera;
+    Transform targetCamera;
 
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] bool setSpriteFromThis;
@@ -23,12 +23,12 @@ public class SpriteAngle : MonoBehaviour
 
     public void UpdateCameraTransform(Transform newCamera)
     {
-        camera = newCamera;
+        targetCamera = newCamera;
     }
 
     private void Start()
     {
-        camera = Camera.main.transform;
+        targetCamera = Camera.main.transform;
     }
 
 
@@ -36,7 +36,7 @@ public class SpriteAngle : MonoBehaviour
     private void Update()
     {
         // Get Target position and direction
-        targetPos = new Vector3(camera.position.x, myParent.position.y, camera.position.z);
+        targetPos = new Vector3(targetCamera.position.x, myParent.position.y, targetCamera.position.z);
         targetDir = targetPos - myParent.position;
 
         // Get angle
@@ -81,10 +81,7 @@ public class SpriteAngle : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (Camera.current != Camera.main && Camera.current != SceneView.lastActiveSceneView.camera) return;
-
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, transform.forward);
-        //Gizmos.DrawLine(transform.position, targetPos);
     }
 }

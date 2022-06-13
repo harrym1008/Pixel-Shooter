@@ -7,7 +7,10 @@ public class Momentum : MonoBehaviour
 {
     public bool characterControllerBased;
 
-    [SerializeField] float mass = 3.0f;
+    [Header("Mass used in code is 8x smaller.")]
+    public Vector2 massRange;
+    public float mass = 0f;
+    [Header("Other")]
     [SerializeField] float damping = 5f;
     float agentHeight;
 
@@ -20,6 +23,11 @@ public class Momentum : MonoBehaviour
     void Start()
     {
         character = GetComponent<CharacterController>();
+
+        if (mass == 0f)
+            mass = RNG.RangeBetweenVector2(massRange);
+
+        mass /= 8;
 
         if (TryGetComponent(out NavMeshAgent nmagent))
         {
