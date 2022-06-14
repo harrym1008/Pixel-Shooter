@@ -45,4 +45,13 @@ public class Manager : MonoBehaviour
         playerRecoil = PlayerRecoil.playerRecoil;
         controls = Controls.controls;
     }
+
+
+    private void Update()
+    {
+        int x = RNG.GetRNGCalls();
+
+        if (x != 0)
+            print($"{x} RNG calls last frame");
+    }
 }

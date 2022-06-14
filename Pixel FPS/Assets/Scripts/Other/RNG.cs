@@ -2,7 +2,17 @@ using UnityEngine;
 
 public static class RNG
 {
+    static int RNGCalls;
     static System.Random random = new System.Random();
+
+
+    public static int GetRNGCalls()
+    {
+        int x = RNGCalls;
+        RNGCalls = 0;
+        return x;
+    }
+
 
     /// <summary>
     /// Returns a number of type double between 0 inclusive and 1 exclusive.
@@ -10,7 +20,7 @@ public static class RNG
     /// <returns></returns>
     public static double NextDouble()
     {
-        //return 0;
+        RNGCalls++;
         return random.NextDouble();
     }
 

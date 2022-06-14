@@ -7,15 +7,16 @@ public class Enemy_Chaingunner : Enemy
 {
     [Header("Chaingunner Parameters")]
     [SerializeField] float sightDistance;
-    [SerializeField] float attackTime;
+    [SerializeField] float timeBetweenBullets;
     [SerializeField] float attackWaitBeforeSpawn;
-
-    [SerializeField] Vector2 meleeDamageRange;
-    [SerializeField] float meleeRange;
 
     [SerializeField] Vector3 spawnLocation;
     [SerializeField] GameObject bulletObject;
+    [SerializeField] BulletData bulletData;
+    [SerializeField] Vector2 bulletSpread;
     [SerializeField] LayerMask attackLayerMask;
+
+    bool firing = false;
 
 
     public override void Start()
@@ -37,7 +38,7 @@ public class Enemy_Chaingunner : Enemy
 
         GetComponent<Collider>().enabled = false;
 
-        StopCoroutine(Attack());
+        StopCoroutine(ChaingunnerAttacks());
 
         base.Die();
     }
@@ -52,16 +53,16 @@ public class Enemy_Chaingunner : Enemy
         base.StateToAttacking(newTarget);
 
         enemyMovement.targetInSight = true;
-        StartCoroutine(ImpAttacks());
+        StartCoroutine(ChaingunnerAttacks());
     }
 
     public override void StateToWander()
     {
         enemyMovement.targetInSight = false;
-        StopCoroutine(ImpAttacks());
+        StopCoroutine(ChaingunnerAttacks());
     }
 
-    IEnumerator ImpAttacks()
+    IEnumerator ChaingunnerAttacks()
     {
         float waiting = AttackWaitTime();
 
@@ -74,22 +75,23 @@ public class Enemy_Chaingunner : Enemy
 
             if (waiting <= 0f)
             {
-                bool melee = IsMeleeAttack();
-                waiting = melee ? 0f : AttackWaitTime();
+                waiting = AttackWaitTime();
 
                 if (AttackCheck())
                 {
-                    waiting *= 0.5f;
+                    firing = true;
                     enemyMovement.SetMovement(false);
-                    StartCoroutine(Attack());
-                    yield return Wait.Seconds(attackTime);
+
+                    StartCoroutine(StartAttack());
+                    firing = true;
+
+                    yield return new WaitUntil(() => !firing);
 
                     if (myTarget.isDead)
                         yield break;
 
                     enemyMovement.SetMovement(true);
                 }
-
             }
 
             yield return Wait.Frame;
@@ -104,57 +106,66 @@ public class Enemy_Chaingunner : Enemy
         return LineOfSightCheck(attackingTarget.position, sightDistance, attackLayerMask);
     }
 
-    IEnumerator Attack()
+    IEnumerator StartAttack()
     {
         animator.SetBool("Attacking", true);
 
-        float until = attackWaitBeforeSpawn;
-        do
-        {
-            FaceTarget();
-            until -= Time.deltaTime;
-            yield return Wait.Frame;
+        float untilNextBullet = timeBetweenBullets;
 
-        } while (until > 0);
+        while (AttackCheck() && !myTarget.isDead)
+        {
+            untilNextBullet -= Time.deltaTime;
+
+            if (untilNextBullet <= 0f)
+            {
+                /*transform.eulerAngles = new Vector3(FaceTargetAngle().x, 
+                    transform.eulerAngles.y, transform.eulerAngles.z);*/
+
+                FaceTarget(true);
+
+                untilNextBullet = timeBetweenBullets - Time.deltaTime;
+                
+                Vector3 spawnAt = transform.position +
+                    spawnLocation.x * transform.right +
+                    spawnLocation.y * transform.up +
+                    spawnLocation.z * transform.forward;
+
+                Vector3 spread = RNG.RandomVector3(bulletSpread.y, bulletSpread.x, 0f);
+
+                BulletBehaviour bullet = Instantiate(bulletObject, spawnAt, 
+                    Quaternion.Euler(transform.eulerAngles + spread)).GetComponent<BulletBehaviour>();
+
+                bullet.velocity = 180f;
+                bullet.effectiveRange = 32;
+
+                bullet.bulletData = bulletData;
+            }
+
+            FaceTarget();
+            // TurnTowards(180f * Time.deltaTime);
+            yield return Wait.Frame;
+        }
+
+        firing = false;
 
         animator.SetBool("Attacking", false);
 
-        Vector3 spawnAt = transform.position + 
-            spawnLocation.x * transform.right +
-            spawnLocation.y * transform.up +
-            spawnLocation.z * transform.forward;
 
-        FaceTarget(true);
 
-        if (myTarget.isDead)
-        {
-            yield break;
-        }
-        else if (IsMeleeAttack())
-        {
-            attackingTarget.GetComponent<Target>().InflictDMG(Mathf.RoundToInt(RNG.RangeBetweenVector2(meleeDamageRange)));
-        }
-        else
-        {
-            ImpFireball ball = Instantiate(bulletObject, spawnAt, transform.rotation).GetComponent<ImpFireball>();
-            ball.spawner = transform;
-        }
                
-        FaceTarget(false);
     }
-
-
-    bool IsMeleeAttack()
-    {
-        return Vector3.Distance(attackingTarget.transform.position, transform.position) <= meleeRange;
-    }
-
-
-
 
     float AttackWaitTime()
     {
-        return 0f;
+        switch (EnemyManager.difficulty)
+        {
+            case EnemyManager.Difficulty.High:
+                return RNG.Range(0.5f, 1f);
+            case EnemyManager.Difficulty.Low:
+                return RNG.Range(2f, 3.2f);
+            default:
+                return RNG.Range(1f, 1.6f);
+        }
     }
 
     void FaceTarget(bool allAngles = false)
@@ -164,4 +175,28 @@ public class Enemy_Chaingunner : Enemy
         if (!allAngles)
             transform.eulerAngles = new Vector3(0f, transform.eulerAngles.y, 0f);
     }
+
+
+    Vector3 FaceTargetAngle(bool allAngles = false)
+    {
+        Quaternion x = transform.rotation;
+        FaceTarget(allAngles);
+        Quaternion y = transform.rotation;
+        transform.rotation = x;
+        return y.eulerAngles;
+    }
+
+
+
+    Vector3 TurnTowards(float maxDegrees, bool allAngles = false)
+    {
+        Quaternion x = transform.rotation;
+
+        FaceTarget(allAngles);
+        Quaternion y = transform.rotation;
+
+        transform.rotation = x;
+        return Quaternion.RotateTowards(x, y, maxDegrees).eulerAngles;
+    }
+
 }

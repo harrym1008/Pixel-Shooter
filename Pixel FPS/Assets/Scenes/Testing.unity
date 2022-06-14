@@ -2679,7 +2679,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh21300
+  m_Name: pb_Mesh21298
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11474,12 +11474,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 9
   sightDistance: 32
-  attackTime: 0.05
+  timeBetweenBullets: 0.1
   attackWaitBeforeSpawn: 0.03
-  meleeDamageRange: {x: 0, y: 0}
-  meleeRange: 0
-  spawnLocation: {x: 0, y: 0, z: 0}
+  spawnLocation: {x: 0, y: 0, z: 0.62}
   bulletObject: {fileID: 3990165130786204730, guid: bfe7809008955294eb6fa7e65023d894, type: 3}
+  bulletData:
+    effectiveRange: 16
+    maximumRange: 128
+    velocity: 96
+    upperDamageRange: {x: 12, y: 15}
+    lowerDamageRange: {x: 6, y: 9}
+    isNull: 0
+  bulletSpread: {x: 3, y: 3}
   attackLayerMask:
     serializedVersion: 2
     m_Bits: 136
