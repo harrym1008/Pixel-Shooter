@@ -55,8 +55,8 @@ public class EnemyManager : MonoBehaviour
 
     public enum Difficulty
     {
+        Low,
         Normal,
-        High,
-        Low
+        High
     }
 }

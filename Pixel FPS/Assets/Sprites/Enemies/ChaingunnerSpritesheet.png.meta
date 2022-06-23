@@ -1006,9 +1006,9 @@ TextureImporter:
       name: ChaingunnerSpritesheet_33
       rect:
         serializedVersion: 2
-        x: 131
+        x: 126
         y: 382
-        width: 50
+        width: 55
         height: 58
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1027,9 +1027,9 @@ TextureImporter:
       name: ChaingunnerSpritesheet_34
       rect:
         serializedVersion: 2
-        x: 225
+        x: 221
         y: 384
-        width: 53
+        width: 57
         height: 56
       alignment: 0
       pivot: {x: 0.5, y: 0.5}

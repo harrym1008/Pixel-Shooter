@@ -47,11 +47,11 @@ public class Manager : MonoBehaviour
     }
 
 
-    private void Update()
+    /*private void Update()
     {
         int x = RNG.GetRNGCalls();
 
         if (x != 0)
             print($"{x} RNG calls last frame");
-    }
+    }*/
 }

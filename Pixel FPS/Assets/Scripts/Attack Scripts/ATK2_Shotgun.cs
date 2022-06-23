@@ -74,6 +74,7 @@ public class ATK2_Shotgun : MonoBehaviour
                 Quaternion.Euler(spawnPosition.eulerAngles + spread)).GetComponent<BulletBehaviour>();
 
             bullet.bulletData = pelletData;
+            bullet.spawnedByPlayer = true;
         }
     }
 
@@ -85,7 +86,7 @@ public class ATK2_Shotgun : MonoBehaviour
             Quaternion.Euler(spawnPosition.eulerAngles + spread)).GetComponent<BulletBehaviour>();
 
         bullet.bulletData = slugData;
-
+        bullet.spawnedByPlayer = true;
     }
 
 

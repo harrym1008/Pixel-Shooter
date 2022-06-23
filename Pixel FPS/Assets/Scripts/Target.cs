@@ -82,6 +82,14 @@ public class Target : MonoBehaviour
     }
 
 
+    public BloodManager.BloodType GetBloodType() {
+        return isPlayer ? BloodManager.BloodType.Crimson : enemy.bloodType; }
+    
+
+    public Momentum GetMomentum() {
+        return isPlayer ? GetComponent<Momentum>() : enemy.momentum; }
+
+
 
     IEnumerator PlayerDie()
     {

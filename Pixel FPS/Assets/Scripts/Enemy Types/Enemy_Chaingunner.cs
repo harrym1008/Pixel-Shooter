@@ -16,8 +16,10 @@ public class Enemy_Chaingunner : Enemy
     [SerializeField] Vector2 bulletSpread;
     [SerializeField] LayerMask attackLayerMask;
 
+    AudioSource audioSource;
     bool firing = false;
-
+    bool hurt = false;
+    float waiting;
 
     public override void Start()
     {
@@ -25,6 +27,8 @@ public class Enemy_Chaingunner : Enemy
         bloodType = BloodManager.BloodType.Crimson;
 
         animator.SetFloat("DieSpeedFactor", RNG.Range(0.8f, 1.2f));
+
+        audioSource = GetComponent<AudioSource>();
     }
 
 
@@ -43,10 +47,7 @@ public class Enemy_Chaingunner : Enemy
         base.Die();
     }
 
-    public override void ChangeTarget(Target target)
-    {
-        enemyMovement.ChangeTarget(target.transform);
-    }
+
 
     public override void StateToAttacking(Transform newTarget)
     {
@@ -62,9 +63,29 @@ public class Enemy_Chaingunner : Enemy
         StopCoroutine(ChaingunnerAttacks());
     }
 
+
+    public override void Hurt()
+    {
+        StartCoroutine(_Hurt());
+    }
+
+    IEnumerator _Hurt()
+    {
+        GetComponent<Animator>().SetBool("Hurt", true);
+        hurt = true;
+
+        yield return Wait.Seconds(0.1f);
+        waiting = RNG.Range(0.15f, 0.3f) * ((int)EnemyManager.difficulty + 1);
+
+        GetComponent<Animator>().SetBool("Hurt", false);
+        hurt = false;
+    }
+
+
+
     IEnumerator ChaingunnerAttacks()
     {
-        float waiting = AttackWaitTime();
+        waiting = AttackWaitTime();
 
         while (true)
         {
@@ -79,13 +100,13 @@ public class Enemy_Chaingunner : Enemy
 
                 if (AttackCheck())
                 {
-                    firing = true;
                     enemyMovement.SetMovement(false);
 
+                    StopCoroutine(StartAttack());
                     StartCoroutine(StartAttack());
-                    firing = true;
 
-                    yield return new WaitUntil(() => !firing);
+                    yield return Wait.Frame;
+                    yield return new WaitUntil(() => !firing && !hurt);
 
                     if (myTarget.isDead)
                         yield break;
@@ -93,34 +114,37 @@ public class Enemy_Chaingunner : Enemy
                     enemyMovement.SetMovement(true);
                 }
             }
-
             yield return Wait.Frame;
         }
-
         yield return Wait.Frame;
     }
 
 
     bool AttackCheck()
     {
-        return LineOfSightCheck(attackingTarget.position, sightDistance, attackLayerMask);
+        bool line = LineOfSightCheck(attackingTarget.position, out RaycastHit hit, sightDistance, attackLayerMask);
+        return line || hit.transform == attackingTarget;
     }
 
     IEnumerator StartAttack()
     {
+        if (firing)
+            yield break;
+
+
         animator.SetBool("Attacking", true);
+        firing = true;
 
         float untilNextBullet = timeBetweenBullets;
 
-        while (AttackCheck() && !myTarget.isDead)
+        int inMagazine = RNG.Next(32, 64);
+
+        while (AttackCheck() && !myTarget.isDead && inMagazine > 0 && !hurt)
         {
             untilNextBullet -= Time.deltaTime;
 
             if (untilNextBullet <= 0f)
             {
-                /*transform.eulerAngles = new Vector3(FaceTargetAngle().x, 
-                    transform.eulerAngles.y, transform.eulerAngles.z);*/
-
                 FaceTarget(true);
 
                 untilNextBullet = timeBetweenBullets - Time.deltaTime;
@@ -139,10 +163,13 @@ public class Enemy_Chaingunner : Enemy
                 bullet.effectiveRange = 32;
 
                 bullet.bulletData = bulletData;
+
+                audioSource.PlayOneShot(audioSource.clip);
+                inMagazine--;
             }
 
             FaceTarget();
-            // TurnTowards(180f * Time.deltaTime);
+
             yield return Wait.Frame;
         }
 
@@ -162,9 +189,9 @@ public class Enemy_Chaingunner : Enemy
             case EnemyManager.Difficulty.High:
                 return RNG.Range(0.5f, 1f);
             case EnemyManager.Difficulty.Low:
-                return RNG.Range(2f, 3.2f);
+                return RNG.Range(2.9f, 3.8f);
             default:
-                return RNG.Range(1f, 1.6f);
+                return RNG.Range(1.6f, 2.1f);
         }
     }
 
@@ -177,7 +204,7 @@ public class Enemy_Chaingunner : Enemy
     }
 
 
-    Vector3 FaceTargetAngle(bool allAngles = false)
+    /*Vector3 FaceTargetAngle(bool allAngles = false)
     {
         Quaternion x = transform.rotation;
         FaceTarget(allAngles);
@@ -197,6 +224,6 @@ public class Enemy_Chaingunner : Enemy
 
         transform.rotation = x;
         return Quaternion.RotateTowards(x, y, maxDegrees).eulerAngles;
-    }
+    }*/
 
 }

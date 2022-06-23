@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour
     {
         if (LineOfSightCheck(player.position, maxSeeDistance))
         {
-            ChangeTarget(player.GetComponent<Target>());
+            ChangeTarget(player);
             StateToAttacking(player);
         }
     }
@@ -55,6 +55,18 @@ public class Enemy : MonoBehaviour
         return !line && distance;
     }
 
+    protected bool LineOfSightCheck(Vector3 endLocation, out RaycastHit hit, float maxDistance = 0f, int layerMask = 0)
+    {
+        if (layerMask == 0)
+            layerMask = seeingLayerMask;
+
+        bool line = Physics.Linecast(transform.position + seeOffsetY * transform.up, endLocation, out hit, layerMask);
+        bool distance = Vector3.Distance(endLocation, transform.position) <= maxDistance;
+        if (maxDistance == 0f) { distance = true; }
+
+        return !line && distance;
+    }
+
 
     public virtual void StateToWander()
     {
@@ -64,9 +76,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void StateToAttacking(Transform newTarget)
     {
-        attackingTarget = newTarget;
-        enemyMovement.ChangeTarget(newTarget);
-        targetInSight = true;
+        ChangeTarget(newTarget);
     }
 
     public virtual void Die()
@@ -77,7 +87,13 @@ public class Enemy : MonoBehaviour
 
 
     public virtual void Hurt() { }
-    public virtual void ChangeTarget(Target target) { }
+
+    public virtual void ChangeTarget(Transform newTarget)
+    {
+        attackingTarget = newTarget;
+        enemyMovement.ChangeTarget(newTarget);
+        targetInSight = true;
+    }
 
 
 

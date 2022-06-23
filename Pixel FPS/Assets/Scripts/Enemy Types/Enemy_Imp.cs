@@ -42,10 +42,7 @@ public class Enemy_Imp : Enemy
         base.Die();
     }
 
-    public override void ChangeTarget(Target target)
-    {
-        enemyMovement.ChangeTarget(target.transform);
-    }
+
 
     public override void StateToAttacking(Transform newTarget)
     {

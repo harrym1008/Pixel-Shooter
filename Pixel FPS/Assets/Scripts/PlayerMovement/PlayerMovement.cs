@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.AI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 groundCheck = Vector3.zero;
     [SerializeField] float groundDistance;
-    [SerializeField] Vector2 belowMapFailsafeData;
+    [SerializeField] Vector2 belowMapFailsafe;
 
     public Controls controlsPrefab;
     public LayerMask groundMask;
@@ -116,10 +117,16 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-        if (transform.position.y < belowMapFailsafeData.x)
+        if (transform.position.y < belowMapFailsafe.x)
         {
             controller.enabled = false;
-            transform.position = new Vector3(transform.position.x, belowMapFailsafeData.y, transform.position.z);
+            Vector3 backupPos = new Vector3(transform.position.x, belowMapFailsafe.y, transform.position.z);
+
+            if (NavMesh.SamplePosition(transform.position, out NavMeshHit navMeshHit, 10000f, groundMask))
+                transform.position = navMeshHit.position + Vector3.up * (controller.height + 0.5f);
+            else
+                transform.position = backupPos;
+            
             controller.enabled = true;
         }
     }

@@ -9,7 +9,12 @@ public class BulletBehaviour : MonoBehaviour
     public float velocity;
     public Vector2 upperDamageRange;
     public Vector2 lowerDamageRange;
-    public LayerMask layerMask;
+    LayerMask layerMask;
+
+    [SerializeField] LayerMask playerLM;
+    [SerializeField] LayerMask enemyLM;
+    public bool spawnedByPlayer = false;
+
 
     Vector3 spawnLocation;
     float totalDistanceTravelled;
@@ -22,6 +27,8 @@ public class BulletBehaviour : MonoBehaviour
 
     private void Start()
     {
+        layerMask = spawnedByPlayer ? playerLM : enemyLM;
+
         UpdateData();
 
         spawnLocation = transform.position;
@@ -61,19 +68,20 @@ public class BulletBehaviour : MonoBehaviour
                 int damage = Mathf.RoundToInt(GetDamage(obstruction.advanceTo));
                 target.InflictDMG(damage);
 
+
                 if (target.isDead)
                 {
                     Manager.blood.CreateBigBlood(obstruction.raycastHit.point,
-                        Quaternion.LookRotation(obstruction.raycastHit.normal), target.enemy.bloodType);
+                        Quaternion.LookRotation(obstruction.raycastHit.normal), target.GetBloodType());
 
-                    target.enemy.momentum.AddImpact(obstruction.raycastHit.normal, velocity * -0.05f);
+                    target.GetMomentum().AddImpact(obstruction.raycastHit.normal, velocity * -0.05f);
                 }
                 else
                 {
                     Manager.blood.CreateSmallBlood(obstruction.raycastHit.point,
-                        Quaternion.LookRotation(obstruction.raycastHit.normal), target.enemy.bloodType);
+                        Quaternion.LookRotation(obstruction.raycastHit.normal), target.GetBloodType());
 
-                    target.enemy.momentum.AddImpact(obstruction.raycastHit.normal, velocity * -0.03f);
+                    target.GetMomentum().AddImpact(obstruction.raycastHit.normal, velocity * -0.03f);
                 }
             }
             else
